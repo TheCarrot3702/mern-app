@@ -13,9 +13,13 @@ services:
     container_name: mern-server
     restart: always
     environment:
-      - ATLAS_URI=mongodb://mongodb:27017/mern-app
+      # The server will connect to the 'mongodb' service on the same network
+      - MONGO_URI=mongodb://mongodb:27017/mern-database
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy  # Wait for MongoDB to be healthy
+    ports:
+      - "5000:5000" # Expose server port to the host
     networks:
       - mern-network
     healthcheck:
