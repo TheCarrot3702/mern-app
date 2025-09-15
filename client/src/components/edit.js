@@ -16,7 +16,7 @@ export default function Edit() {
     useEffect(() => {
         async function fetchData() {
             const id = params.id
-            const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/${id}`)
+            const response = await fetch(`${API_URL}/record/${id}`)
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`
                 window.alert(message)
@@ -48,7 +48,7 @@ export default function Edit() {
         e.preventDefault()
 
         const editedPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/update/${params.id}`, {
+        const response = await fetch(`${API_URL}/update/${params.id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
