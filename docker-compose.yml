@@ -5,7 +5,7 @@ services:
     container_name: mern-client
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"
       - "443:443"
     volumes:
       - ./certbot/www:/var/www/certbot:ro
@@ -22,7 +22,7 @@ services:
     container_name: mern-server
     restart: always
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/mern-database
+      - MONGO_URI=mongodb://mern-mongodb:27017/mern-database
     depends_on:
       mongodb:
         condition: service_healthy
@@ -36,7 +36,7 @@ services:
       timeout: 10s
       retries: 5
 
-  # Back-end Database
+  # MongoDB database
   mongodb:
     image: mongo:latest
     container_name: mern-mongodb
@@ -51,21 +51,28 @@ services:
       timeout: 10s
       retries: 5
 
-  # Database Graphical Interface
+  # Mongo Express GUI
   mongo-express:
     image: mongo-express:latest
     container_name: mern-mongo-express
     restart: always
+    ports:
+      - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_SERVER=mern-mongodb
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=pass
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - mern-network
 
+# Shared Docker network
 networks:
   mern-network:
     driver: bridge
 
+# Persistent volume for MongoDB
 volumes:
   mongodb_data:
