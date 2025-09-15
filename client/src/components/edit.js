@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 
 export default function Edit() {
+
+    const API_URL = "http://34.205.154.232:5000";
+    
     const [form, setForm] = useState({
         name: "",
         position: "",
