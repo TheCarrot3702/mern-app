@@ -2,6 +2,9 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export default function Create() {
+
+    const API_URL = "http://34.205.154.232:5000";
+    
     const [form, setForm] = useState({
         name: "",
         position: "",
@@ -19,7 +22,7 @@ export default function Create() {
         e.preventDefault()
 
         const newPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/add`, {
+        const response = await fetch(`${API_URL}/record/add`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
